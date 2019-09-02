@@ -1,0 +1,16 @@
+/node_modules
+/public/hot
+/public/storage
+/public/css/app.css
+/public/js/app.js
+/public/fonts/*
+/vendor
+.DS_store
+.env
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+package-lock.json
+public/mix-manifest.json
