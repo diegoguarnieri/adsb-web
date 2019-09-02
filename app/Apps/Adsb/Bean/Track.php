@@ -1,6 +1,6 @@
 <?php
 
-namespace App\BI\Bean;
+namespace App\Apps\Adsb\Bean;
 
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
