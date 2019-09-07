@@ -13,6 +13,10 @@ use App\Apps\Adsb\Bean\Track;
 class AdsbController extends Controller {
 
     public function __construct() {
+        
+    }
+
+    public function active() {
         $items['ZZZ'] = [
             'icao' => 'ZZZ',
             'callsign' => 'ABC1234',
@@ -49,10 +53,6 @@ class AdsbController extends Controller {
 
         $response = ['items' => $items];
         return response()->json($response, 200);
-    }
-
-    public function active() {
-
     }
 
     public function store(Request $request) {
