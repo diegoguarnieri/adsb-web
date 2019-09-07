@@ -1,5 +1,5 @@
 <?php
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('adsb', function () {
+    return view('adsb');
 });
