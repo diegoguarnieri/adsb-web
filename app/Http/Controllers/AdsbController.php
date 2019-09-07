@@ -13,6 +13,45 @@ use App\Apps\Adsb\Bean\Track;
 class AdsbController extends Controller {
 
     public function __construct() {
+        $items['ZZZ'] = [
+            'icao' => 'ZZZ',
+            'callsign' => 'ABC1234',
+            'latitude' => '45.23',
+            'longitude' => '56.32',
+            'track' => '109',
+            'altitude' => '15000',
+            'groundSpeed' => '135',
+            'verticalSpeed' => '150',
+            'squawk' => ''
+        ];
+        $items['XXX'] = [
+            'icao' => 'XXX',
+            'callsign' => 'ABC1234',
+            'latitude' => '45.23',
+            'longitude' => '56.32',
+            'track' => '109',
+            'altitude' => '15000',
+            'groundSpeed' => '135',
+            'verticalSpeed' => '150',
+            'squawk' => ''
+        ];
+        $items['XXX'] = [
+            'icao' => 'XXX',
+            'callsign' => 'ABC1234',
+            'latitude' => '45.23',
+            'longitude' => '56.32',
+            'track' => '109',
+            'altitude' => '15000',
+            'groundSpeed' => '135',
+            'verticalSpeed' => '150',
+            'squawk' => ''
+        ];
+
+        $response = ['items' => $items];
+        return response()->json($response, 200);
+    }
+
+    public function active() {
 
     }
 

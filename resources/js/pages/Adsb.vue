@@ -26,8 +26,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td></td>
+                            <tr v-for="(item, index) in items" :key="index">
+                                <td>{{ item.icao }}</td>
+                                <td>{{ item.callsign }}</td>
+                                <td>{{ item.latitude }}</td>
+                                <td>{{ item.longitude }}</td>
+                                <td>{{ item.track }}</td>
+                                <td>{{ item.altitude }}</td>
+                                <td>{{ item.groundSpeed }}</td>
+                                <td>{{ item.verticalSpeed }}</td>
+                                <td>{{ item.squawk }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -41,10 +49,13 @@
 export default {
     data() {
         return {
-
+            route: 'adsb',
+            items: []
         }
     },
     beforeMount() {
+        this.getInitialItems()
+
         var ws = new WebSocket('ws://172.16.3.50:8080');
 
         ws.onopen = function() {
@@ -62,6 +73,17 @@ export default {
 
         ws.onclose = function() {
             console.log('WebSocket disconnected')
+        }
+    },
+    methods: {
+        getInitialItems: function() {
+            axios.get(this.route + '/active')
+            .then(response => {
+                this.items = response.data.items
+            })
+            .catch(error => {
+                console.log(error)
+            })
         }
     }
 }
