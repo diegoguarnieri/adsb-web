@@ -39,8 +39,8 @@ class AdsbController extends Controller {
             'verticalSpeed' => '150',
             'squawk' => ''
         ];
-        $items['XXX'] = [
-            'icao' => 'XXX',
+        $items['YYY'] = [
+            'icao' => 'YYY',
             'callsign' => 'ABC1234',
             'latitude' => '45.23',
             'longitude' => '56.32',
