@@ -65,6 +65,7 @@ export default {
 
         ws.onmessage = function(ev) {
             console.log(ev);
+            this.updateItem(ev.data)
         }
 
         ws.onerror = function(error) {
@@ -76,6 +77,24 @@ export default {
         }
     },
     methods: {
+        updateItem: function(data) {
+            var item = JSON.parse(data)
+
+            var items = this.items
+
+            Object.keys(items).forEach(key => {
+                if(String(row.icao).indexOf(item.icao) > -1) {
+                    this.items[key].callsign = item.callsign
+                    this.items[key].latitude = item.latitude
+                    this.items[key].longitude = item.longitude
+                    this.items[key].track = item.track
+                    this.items[key].altitude = item.altitude
+                    this.items[key].groundSpeed = item.groundSpeed
+                    this.items[key].verticalSpeed = item.verticalSpeed
+                    this.items[key].squawk = item.squawk
+                }
+            })
+        },
         getInitialItems: function() {
             axios.get(this.route + '/active')
             .then(response => {

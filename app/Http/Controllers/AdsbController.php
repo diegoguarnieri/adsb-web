@@ -17,7 +17,7 @@ class AdsbController extends Controller {
     }
 
     public function active() {
-        $items['ZZZ'] = [
+        $items[] = [
             'icao' => 'ZZZ',
             'callsign' => 'ABC1234',
             'latitude' => '45.23',
@@ -28,7 +28,7 @@ class AdsbController extends Controller {
             'verticalSpeed' => '150',
             'squawk' => ''
         ];
-        $items['XXX'] = [
+        $items[] = [
             'icao' => 'XXX',
             'callsign' => 'ABC1234',
             'latitude' => '45.23',
@@ -39,7 +39,7 @@ class AdsbController extends Controller {
             'verticalSpeed' => '150',
             'squawk' => ''
         ];
-        $items['YYY'] = [
+        $items[] = [
             'icao' => 'YYY',
             'callsign' => 'ABC1234',
             'latitude' => '45.23',
