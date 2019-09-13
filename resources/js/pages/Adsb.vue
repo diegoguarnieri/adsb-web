@@ -56,7 +56,9 @@ export default {
     beforeMount() {
         this.getInitialItems()
 
-        var ws = new WebSocket('ws://172.16.3.50:8080');
+        this.connect()
+
+        /*var ws = new WebSocket('ws://172.16.3.50:8080');
 
         ws.onopen = function() {
             console.log('websocket is connected...')
@@ -75,35 +77,36 @@ export default {
 
         ws.onclose = function() {
             console.log('WebSocket disconnected')
-        }
-
-        function updateItem(data) {
-            var item = JSON.parse(data)
-
-            var items = this.items
-
-            Object.keys(items).forEach(key => {
-                if(String(row.icao).indexOf(item.icao) > -1) {
-                    this.items[key].callsign = item.callsign
-                    this.items[key].latitude = item.latitude
-                    this.items[key].longitude = item.longitude
-                    this.items[key].track = item.track
-                    this.items[key].altitude = item.altitude
-                    this.items[key].groundSpeed = item.groundSpeed
-                    this.items[key].verticalSpeed = item.verticalSpeed
-                    this.items[key].squawk = item.squawk
-                }
-            })
-        }
+        }*/
     },
     methods: {
+        connect: function() {
+            Vue.use(VueWebSocket, 'ws://172.16.3.50:8080', { 
+                format: 'json',
+                reconnection: true,
+                reconnectionAttempts: 5000,
+                reconnectionDelay: 300
+            })
+
+            this.$options.sockets.onmessage = (data) => console.log(data)
+
+            /*this.socket = new VueWebSocket('ws://172.16.3.50:8080')
+
+            this.socket.onopen = () => {
+                console.log('websocket is connected...')
+
+                this.socket.onmessage = ({data}) => {
+                    console.log(data)
+                }
+            }*/
+        },
         updateItem: function(data) {
             var item = JSON.parse(data)
 
             var items = this.items
 
             Object.keys(items).forEach(key => {
-                if(String(row.icao).indexOf(item.icao) > -1) {
+                if(String(this.items[key].icao).indexOf(item.icao) > -1) {
                     this.items[key].callsign = item.callsign
                     this.items[key].latitude = item.latitude
                     this.items[key].longitude = item.longitude
