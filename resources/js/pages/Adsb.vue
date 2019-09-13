@@ -56,7 +56,9 @@ export default {
     beforeMount() {
         this.getInitialItems()
 
-        this.connect()
+        //this.connect()
+
+        this.$options.sockets.onmessage = (data) => console.log(data)
 
         /*var ws = new WebSocket('ws://172.16.3.50:8080');
 
@@ -79,7 +81,7 @@ export default {
             console.log('WebSocket disconnected')
         }*/
     },
-    socket: {
+    /*socket: {
         events: {
             changes(msg) {
                 console.log(msg)
@@ -94,7 +96,7 @@ export default {
                 console.error("Websocket error!", err);
             }
         }
-    },
+    },*/
     methods: {
         connect: function() {
             /*Vue.use(VueWebSocket, 'ws://172.16.3.50:8080', { 
