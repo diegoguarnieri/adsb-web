@@ -79,16 +79,32 @@ export default {
             console.log('WebSocket disconnected')
         }*/
     },
+    socket: {
+        events: {
+            changes(msg) {
+                console.log(msg)
+            },
+            connect() {
+                console.log("Websocket connected to " + this.$socket.nsp);
+            },
+            disconnect() {
+                console.log("Websocket disconnected from " + this.$socket.nsp);
+            },
+            error(err) {
+                console.error("Websocket error!", err);
+            }
+        }
+    },
     methods: {
         connect: function() {
-            Vue.use(VueWebSocket, 'ws://172.16.3.50:8080', { 
+            /*Vue.use(VueWebSocket, 'ws://172.16.3.50:8080', { 
                 format: 'json',
                 reconnection: true,
                 reconnectionAttempts: 5000,
                 reconnectionDelay: 300
             })
 
-            this.$options.sockets.onmessage = (data) => console.log(data)
+            this.$options.sockets.onmessage = (data) => console.log(data)*/
 
             /*this.socket = new VueWebSocket('ws://172.16.3.50:8080')
 
