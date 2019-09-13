@@ -58,7 +58,11 @@ export default {
 
         //this.connect()
 
-        this.$options.sockets.onmessage = (data) => console.log(data)
+        this.$options.sockets.onmessage = (data) => {
+            console.log(data)
+
+            this.updateItem(data.data)
+        }
 
         /*var ws = new WebSocket('ws://172.16.3.50:8080');
 
