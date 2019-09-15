@@ -65,8 +65,8 @@ class AdsbController extends Controller {
             'longitude' => $request->longitude,
             'track' => $request->track,
             'altitude' => $request->altitude,
-            'ground_speed' => $request->groundSpeed,
-            'vertical_speed' => $request->verticalSpeed,
+            'groundSpeed' => $request->groundSpeed,
+            'verticalSpeed' => $request->verticalSpeed,
             'squawk' => $request->squawk
         );
 
@@ -76,7 +76,7 @@ class AdsbController extends Controller {
         $httpRequest->setJsonBody(true);
         $httpRequest->setFields($fields);
         $httpRequest->setMethod('post');
-        
+
         $httpRequest->exec();
 
 
