@@ -145,6 +145,7 @@ export default {
 
             if(!found) {
                 var obj = {
+                    icao: item.icao,
                     callsign: item.callsign,
                     latitude: item.latitude,
                     longitude: item.longitude,
