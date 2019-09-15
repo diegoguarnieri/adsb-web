@@ -127,6 +127,7 @@ export default {
 
             var items = this.items
 
+            var found = false;
             Object.keys(items).forEach(key => {
                 if(String(this.items[key].icao).indexOf(item.icao) > -1) {
                     this.items[key].callsign = item.callsign
@@ -137,8 +138,25 @@ export default {
                     this.items[key].groundSpeed = item.groundSpeed
                     this.items[key].verticalSpeed = item.verticalSpeed
                     this.items[key].squawk = item.squawk
+
+                    found = true
                 }
             })
+
+            if(!found) {
+                var obj = {
+                    callsign: item.callsign,
+                    latitude: item.latitude,
+                    longitude: item.longitude,
+                    track: item.track,
+                    altitude: item.altitude,
+                    groundSpeed: item.groundSpeed,
+                    verticalSpeed: item.verticalSpeed,
+                    squawk: item.squawk
+                }
+
+                this.items.push(obj)
+            }
         },
         getInitialItems: function() {
             axios.get(this.route + '/active')

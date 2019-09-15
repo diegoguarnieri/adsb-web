@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use DateTime;
 use App\Apps\Adsb\Bean\Track;
+use App\Apps\Util\HttpRequest;
 
 class AdsbController extends Controller {
 
@@ -57,9 +58,31 @@ class AdsbController extends Controller {
 
     public function store(Request $request) {
 
+        $fields = array(
+            'icao' => $request->icao,
+            'callsign' => $request->callsign,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
+            'track' => $request->track,
+            'altitude' => $request->altitude,
+            'ground_speed' => $request->groundSpeed,
+            'vertical_speed' => $request->verticalSpeed,
+            'squawk' => $request->squawk
+        );
+
+        $httpRequest = new HttpRequest();
+        $httpRequest->setUrl('http://172.16.3.50:9090');
+        $httpRequest->setContentType('json');
+        $httpRequest->setJsonBody(true);
+        $httpRequest->setFields($fields);
+        $httpRequest->setMethod('post');
+        
+        $httpRequest->exec();
+
+
         $track = new Track();
 
-        $track->seticao($request->icao);
+        $track->setIcao($request->icao);
         $track->setCallsign($request->callsign);
         $track->setLatitude($request->latitude);
         $track->setLongitude($request->longitude);
