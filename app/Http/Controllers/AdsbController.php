@@ -29,28 +29,59 @@ class AdsbController extends Controller {
             'verticalSpeed' => '150',
             'squawk' => ''
         ];
-        $items[] = [
-            'icao' => 'XXX',
-            'callsign' => 'ABC1234',
-            'latitude' => '45.23',
-            'longitude' => '56.32',
-            'track' => '109',
-            'altitude' => '15000',
-            'groundSpeed' => '135',
-            'verticalSpeed' => '150',
-            'squawk' => ''
-        ];
-        $items[] = [
-            'icao' => 'YYY',
-            'callsign' => 'ABC1234',
-            'latitude' => '45.23',
-            'longitude' => '56.32',
-            'track' => '109',
-            'altitude' => '15000',
-            'groundSpeed' => '135',
-            'verticalSpeed' => '150',
-            'squawk' => ''
-        ];
+        
+        $sql = "select * from track
+                 where created > date_sub(now(), interval 1 day)
+              order by icao, track_id asc";
+        $res = DB::select($sql);
+
+        foreach($res as $key => $value) {
+            if(isset($items[$value->icao])) {
+                if($value->callsign != null || $value->callsign != 'RM' || $value->callsign != 'SL') {
+                    $items[$value->icao]['callsign'] = $value->callsign;
+                }
+
+                if($value->latitude != null) {
+                    $items[$value->icao]['latitude'] = $value->latitude;
+                }
+
+                if($value->longitude != null) {
+                    $items[$value->icao]['longitude'] = $value->longitude;
+                }
+
+                if($value->track != null) {
+                    $items[$value->icao]['track'] = $value->track;
+                }
+
+                if($value->altitude != null) {
+                    $items[$value->icao]['altitude'] = $value->altitude;
+                }
+
+                if($value->ground_speed != null) {
+                    $items[$value->icao]['groundSpeed'] = $value->ground_speed;
+                }
+
+                if($value->vertical_speed != null) {
+                    $items[$value->icao]['verticalSpeed'] = $value->vertical_speed;
+                }
+
+                if($value->squawk != null) {
+                    $items[$value->icao]['squawk'] = $value->squawk;
+                }
+            } else {
+                $items[$value->icao] = [
+                    'icao' => $value->icao,
+                    'callsign' => $value->callsign,
+                    'latitude' => $value->latitude,
+                    'longitude' => $value->longitude,
+                    'track' => $value->track,
+                    'altitude' => $value->altitude,
+                    'groundSpeed' => $value->ground_speed,
+                    'verticalSpeed' => $value->vertical_speed,
+                    'squawk' => $value->squawk
+                ];
+            }
+        }
 
         $response = ['items' => $items];
         return response()->json($response, 200);
