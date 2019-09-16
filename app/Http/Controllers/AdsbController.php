@@ -18,18 +18,6 @@ class AdsbController extends Controller {
     }
 
     public function active() {
-        $items[] = [
-            'icao' => 'ZZZ',
-            'callsign' => 'ABC1234',
-            'latitude' => '45.23',
-            'longitude' => '56.32',
-            'track' => '109',
-            'altitude' => '15000',
-            'groundSpeed' => '135',
-            'verticalSpeed' => '150',
-            'squawk' => ''
-        ];
-        
         $sql = "select * from track
                  where created > date_sub(now(), interval 1 day)
               order by icao, track_id asc";
@@ -37,7 +25,7 @@ class AdsbController extends Controller {
 
         foreach($res as $key => $value) {
             if(isset($items[$value->icao])) {
-                if($value->callsign != null || $value->callsign != 'RM' || $value->callsign != 'SL') {
+                if($value->callsign != null && $value->callsign != 'RM' && $value->callsign != 'SL') {
                     $items[$value->icao]['callsign'] = $value->callsign;
                 }
 
@@ -68,6 +56,9 @@ class AdsbController extends Controller {
                 if($value->squawk != null) {
                     $items[$value->icao]['squawk'] = $value->squawk;
                 }
+
+                $items[$value->icao]['timestamp'] = $value->created;
+                
             } else {
                 $items[$value->icao] = [
                     'icao' => $value->icao,
@@ -78,7 +69,8 @@ class AdsbController extends Controller {
                     'altitude' => $value->altitude,
                     'groundSpeed' => $value->ground_speed,
                     'verticalSpeed' => $value->vertical_speed,
-                    'squawk' => $value->squawk
+                    'squawk' => $value->squawk,
+                    'timestamp' => $value->created
                 ];
             }
         }
