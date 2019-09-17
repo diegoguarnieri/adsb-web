@@ -146,6 +146,8 @@ export default {
                 this.items.push(obj)
             }
 
+            this.sortItems()
+
             console.log(this.items)
         },
         sortItems: function() {
@@ -163,6 +165,8 @@ export default {
                 Object.keys(items).forEach(key => {
                     this.items.push(items[key])
                 })
+
+                this.sortItems()
 
                 console.log(this.items)
             })
