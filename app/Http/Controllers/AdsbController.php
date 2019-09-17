@@ -90,7 +90,8 @@ class AdsbController extends Controller {
             'altitude' => $request->altitude,
             'groundSpeed' => $request->groundSpeed,
             'verticalSpeed' => $request->verticalSpeed,
-            'squawk' => $request->squawk
+            'squawk' => $request->squawk,
+            'timestamp' => (new DateTime())->format('Y-m-d H:i:s')
         );
 
         $httpRequest = new HttpRequest();

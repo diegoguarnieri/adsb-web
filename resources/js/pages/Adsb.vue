@@ -23,6 +23,7 @@
                                 <th>Ground Speed</th>
                                 <th>Vertical Speed</th>
                                 <th>Squawk</th>
+                                <th>Timestamp</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -36,6 +37,7 @@
                                 <td>{{ item.groundSpeed }}</td>
                                 <td>{{ item.verticalSpeed }}</td>
                                 <td>{{ item.squawk }}</td>
+                                <td>{{ item.timestamp }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -138,6 +140,7 @@ export default {
                     this.items[key].groundSpeed = item.groundSpeed
                     this.items[key].verticalSpeed = item.verticalSpeed
                     this.items[key].squawk = item.squawk
+                    this.items[key].timestamp = item.timestamp
 
                     found = true
                 }
@@ -153,7 +156,8 @@ export default {
                     altitude: item.altitude,
                     groundSpeed: item.groundSpeed,
                     verticalSpeed: item.verticalSpeed,
-                    squawk: item.squawk
+                    squawk: item.squawk,
+                    timestamp: item.timestamp
                 }
 
                 this.items.push(obj)
