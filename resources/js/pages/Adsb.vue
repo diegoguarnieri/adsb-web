@@ -58,79 +58,20 @@ export default {
     beforeMount() {
         this.getInitialItems()
 
-        //this.connect()
-
         this.$options.sockets.onmessage = (data) => {
             console.log(data)
 
             this.updateItem(data.data)
         }
-
-        /*var ws = new WebSocket('ws://172.16.3.50:8080');
-
-        ws.onopen = function() {
-            console.log('websocket is connected...')
-            ws.send('connected')
-        }
-
-        ws.onmessage = function(ev) {
-            console.log(ev);
-            updateItem(ev.data)
-            //parei aqui: Uncaught TypeError: this.updateItem is not a function
-        }
-
-        ws.onerror = function(error) {
-            console.log(`WebSocket error: ${error}`)
-        }
-
-        ws.onclose = function() {
-            console.log('WebSocket disconnected')
-        }*/
     },
-    /*socket: {
-        events: {
-            changes(msg) {
-                console.log(msg)
-            },
-            connect() {
-                console.log("Websocket connected to " + this.$socket.nsp);
-            },
-            disconnect() {
-                console.log("Websocket disconnected from " + this.$socket.nsp);
-            },
-            error(err) {
-                console.error("Websocket error!", err);
-            }
-        }
-    },*/
     methods: {
-        connect: function() {
-            /*Vue.use(VueWebSocket, 'ws://172.16.3.50:8080', { 
-                format: 'json',
-                reconnection: true,
-                reconnectionAttempts: 5000,
-                reconnectionDelay: 300
-            })
-
-            this.$options.sockets.onmessage = (data) => console.log(data)*/
-
-            /*this.socket = new VueWebSocket('ws://172.16.3.50:8080')
-
-            this.socket.onopen = () => {
-                console.log('websocket is connected...')
-
-                this.socket.onmessage = ({data}) => {
-                    console.log(data)
-                }
-            }*/
-        },
         updateItem: function(data) {
             var item = JSON.parse(data)
 
-            var items = this.items
+            //var items = this.items
 
             var found = false;
-            Object.keys(items).forEach(key => {
+            /*Object.keys(items).forEach(key => {
                 if(String(this.items[key].icao).indexOf(item.icao) > -1) {
                     this.items[key].callsign = item.callsign
                     this.items[key].latitude = item.latitude
@@ -144,7 +85,49 @@ export default {
 
                     found = true
                 }
-            })
+            })*/
+
+            for(let i = 0; i < this.items.length; i++) {
+                if(String(this.items[i].icao).indexOf(item.icao) > -1) {
+                    if(item.callsign != '' && item.callsign != 'RM' && item.callsign != 'SL') {
+                        this.items[i].callsign = item.callsign
+                    }
+
+                    if(item.latitude != '') {
+                        this.items[i].latitude = item.latitude
+                    }
+
+                    if(item.longitude != '') {
+                        this.items[i].longitude = item.longitude
+                    }
+
+                    if(item.track != '') {
+                        this.items[i].track = item.track
+                    }
+
+                    if(item.altitude != '') {
+                        this.items[i].altitude = item.altitude
+                    }
+
+                    if(item.groundSpeed != '') {
+                        this.items[i].groundSpeed = item.groundSpeed
+                    }
+
+                    if(item.verticalSpeed != '') {
+                        this.items[i].verticalSpeed = item.verticalSpeed
+                    }
+                    
+                    if(item.squawk != '') {
+                        this.items[i].squawk = item.squawk
+                    }
+
+                    if(item.timestamp != '') {
+                        this.items[i].timestamp = item.timestamp
+                    }
+
+                    found = true
+                }
+            }
 
             if(!found) {
                 var obj = {
@@ -162,11 +145,26 @@ export default {
 
                 this.items.push(obj)
             }
+
+            console.log(this.items)
+        },
+        sortItems: function() {
+            var items = this.items
+
+            items.sort((a, b) => (a.timestamp > b.timestamp) ? 1 : -1)
+
+            this.items = items
         },
         getInitialItems: function() {
             axios.get(this.route + '/active')
             .then(response => {
-                this.items = response.data.items
+                var items = response.data.items
+
+                Object.keys(items).forEach(key => {
+                    this.items.push(items[key])
+                })
+
+                console.log(this.items)
             })
             .catch(error => {
                 console.log(error)
