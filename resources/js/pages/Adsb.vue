@@ -153,7 +153,7 @@ export default {
         sortItems: function() {
             var items = this.items
 
-            items.sort((a, b) => (a.timestamp > b.timestamp) ? 1 : -1)
+            items.sort((a, b) => (a.timestamp < b.timestamp) ? 1 : -1)
 
             this.items = items
         },
