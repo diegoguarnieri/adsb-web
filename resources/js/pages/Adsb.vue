@@ -89,39 +89,39 @@ export default {
 
             for(let i = 0; i < this.items.length; i++) {
                 if(String(this.items[i].icao).indexOf(item.icao) > -1) {
-                    if(item.callsign != '' && item.callsign != 'RM' && item.callsign != 'SL') {
+                    if(item.callsign != null && item.callsign != '' && item.callsign != 'RM' && item.callsign != 'SL') {
                         this.items[i].callsign = item.callsign
                     }
 
-                    if(item.latitude != '') {
+                    if(item.latitude != null && item.latitude != '') {
                         this.items[i].latitude = item.latitude
                     }
 
-                    if(item.longitude != '') {
+                    if(item.longitude != null && item.longitude != '') {
                         this.items[i].longitude = item.longitude
                     }
 
-                    if(item.track != '') {
+                    if(item.track != null && item.track != '') {
                         this.items[i].track = item.track
                     }
 
-                    if(item.altitude != '') {
+                    if(item.altitude != null && item.altitude != '') {
                         this.items[i].altitude = item.altitude
                     }
 
-                    if(item.groundSpeed != '') {
+                    if(item.groundSpeed != null && item.groundSpeed != '') {
                         this.items[i].groundSpeed = item.groundSpeed
                     }
 
-                    if(item.verticalSpeed != '') {
+                    if(item.verticalSpeed != null && item.verticalSpeed != '') {
                         this.items[i].verticalSpeed = item.verticalSpeed
                     }
                     
-                    if(item.squawk != '') {
+                    if(item.squawk != null && item.squawk != '') {
                         this.items[i].squawk = item.squawk
                     }
 
-                    if(item.timestamp != '') {
+                    if(item.timestamp != null && item.timestamp != '') {
                         this.items[i].timestamp = item.timestamp
                     }
 
