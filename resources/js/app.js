@@ -6,7 +6,7 @@ import VueWebSocket from 'vue-native-websocket'
 
 //Vue.use(VueWebsocket, 'ws://172.16.3.50:8080')
 
-Vue.use(VueWebSocket, 'ws://172.16.3.50:8080', { 
+Vue.use(VueWebSocket, 'ws://172.16.3.50:2020', { 
     format: 'json',
     reconnection: true,
     reconnectionAttempts: 5000,
