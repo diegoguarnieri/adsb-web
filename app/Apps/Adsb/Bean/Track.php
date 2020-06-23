@@ -19,7 +19,7 @@ class Track {
     private $verticalSpeed;
     private $squawk;
 
-    public function __construct($id) {
+    public function __construct($id = null) {
         if(!is_null($id)) {
             $this->getById($id);
         }

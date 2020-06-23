@@ -47,6 +47,8 @@ if(isset($sock)) {
                 $printed_heartbeat = false;
             }
 
+            echo json_encode($line);
+
             //the most important fields
             $icao = $line[4];
             $callsign = $line[10];

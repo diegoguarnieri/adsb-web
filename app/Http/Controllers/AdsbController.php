@@ -79,6 +79,7 @@ class AdsbController extends Controller {
     }
 
     public function store(Request $request) {
+        Log::info('AdsbController->store',[json_encode($request->all())]);
 
         $adsbBO = new AdsbBO();
         $adsbBO->storeTrack($request);
