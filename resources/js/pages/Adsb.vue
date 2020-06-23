@@ -10,7 +10,7 @@
             </div>
 
             <div class="card-body">
-                <div class="table-responsive">
+                <!--<div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
                             <tr>
@@ -41,6 +41,21 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>-->
+
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Message</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(item, index) in items.slice().reverse()" :key="index">
+                                <td>{{ item }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -56,7 +71,7 @@ export default {
         }
     },
     beforeMount() {
-        this.getInitialItems()
+        //this.getInitialItems()
 
         this.$options.sockets.onmessage = (data) => {
             //console.log(data)
@@ -69,6 +84,8 @@ export default {
     methods: {
         update: function(data) {
             console.log('update',data)
+
+            this.items.push(data.data)
         },
         updateItem: function(data) {
             var item = JSON.parse(data)
