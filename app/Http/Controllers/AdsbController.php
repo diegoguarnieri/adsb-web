@@ -18,6 +18,9 @@ class AdsbController extends Controller {
     }
 
     public function active() {
+        $response = [];
+        return response()->json($response, 200);
+
         $sql = "select * from track
                  where created > date_sub(now(), interval 1 day)
               order by icao, track_id asc";

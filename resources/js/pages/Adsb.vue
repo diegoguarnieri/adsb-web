@@ -59,12 +59,17 @@ export default {
         this.getInitialItems()
 
         this.$options.sockets.onmessage = (data) => {
-            console.log(data)
+            //console.log(data)
 
-            this.updateItem(data.data)
+            this.update(data)
+
+            //this.updateItem(data.data)
         }
     },
     methods: {
+        update: function(data) {
+            console.log('update',data)
+        },
         updateItem: function(data) {
             var item = JSON.parse(data)
 
