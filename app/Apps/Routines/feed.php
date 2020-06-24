@@ -47,58 +47,60 @@ if(isset($sock)) {
                 $printed_heartbeat = false;
             }
 
-            echo json_encode($line);
+            echo json_encode($line) . "\n";
 
-            //the most important fields
-            $icao = $line[4];
-            $callsign = $line[10];
-            $latitude = $line[14];
-            $longitude = $line[15];
-            $track = $line[13];
-            $altitude = $line[11];
-            $groundSpeed = $line[12];
-            $verticalSpeed = $line[16];
-            $squawk = $line[17];
+            if($line[0] == 'MSG') {
+                //the most important fields
+                $icao = $line[4];
+                $callsign = $line[10];
+                $latitude = $line[14];
+                $longitude = $line[15];
+                $track = $line[13];
+                $altitude = $line[11];
+                $groundSpeed = $line[12];
+                $verticalSpeed = $line[16];
+                $squawk = $line[17];
 
-            if(
-                $callsign != "" ||
-                $latitude != "" ||
-                $longitude != "" ||
-                $track != "" ||
-                $altitude != "" ||
-                $groundSpeed != "" ||
-                $verticalSpeed != "" ||
-                $squawk != ""
-            ) {
-                $fields = array(
-                    'icao' => $icao,
-                    'callsign' => $callsign,
-                    'latitude' => $latitude,
-                    'longitude' => $longitude,
-                    'track' => $track,
-                    'altitude' => $altitude,
-                    'groundSpeed' => $groundSpeed,
-                    'verticalSpeed' => $verticalSpeed,
-                    'squawk' => $squawk
-                );
+                if(
+                    $callsign != "" ||
+                    $latitude != "" ||
+                    $longitude != "" ||
+                    $track != "" ||
+                    $altitude != "" ||
+                    $groundSpeed != "" ||
+                    $verticalSpeed != "" ||
+                    $squawk != ""
+                ) {
+                    $fields = array(
+                        'icao' => $icao,
+                        'callsign' => $callsign,
+                        'latitude' => $latitude,
+                        'longitude' => $longitude,
+                        'track' => $track,
+                        'altitude' => $altitude,
+                        'groundSpeed' => $groundSpeed,
+                        'verticalSpeed' => $verticalSpeed,
+                        'squawk' => $squawk
+                    );
 
-                $ch = curl_init();
+                    $ch = curl_init();
 
-                curl_setopt($ch, CURLOPT_URL, 'http://172.16.3.50/api/adsb');
-                //curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($fields));
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($ch, CURLOPT_POST, true);
-                curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+                    curl_setopt($ch, CURLOPT_URL, 'http://172.16.3.50/api/adsb');
+                    //curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($fields));
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($ch, CURLOPT_POST, true);
+                    curl_setopt($ch, CURLINFO_HEADER_OUT, true);
 
-                //request type | true = assync
-                if(true) {
-                    curl_setopt($ch, CURLOPT_TIMEOUT, 1);
-                    curl_setopt($ch, CURLOPT_NOSIGNAL, 1);
+                    //request type | true = assync
+                    if(true) {
+                        curl_setopt($ch, CURLOPT_TIMEOUT, 1);
+                        curl_setopt($ch, CURLOPT_NOSIGNAL, 1);
+                    }
+
+                    curl_exec($ch);
+                    curl_close($ch);
                 }
-
-                curl_exec($ch);
-                curl_close($ch);
             }
         }
     }
