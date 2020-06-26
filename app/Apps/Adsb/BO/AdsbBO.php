@@ -5,7 +5,8 @@ namespace App\Apps\Adsb\BO;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use DateTime;
-use App\Apps\Adsb\Bean\Track;
+//use App\Apps\Adsb\Bean\Track;
+use App\Collections\Track;
 use App\Apps\Util\HttpRequest;
 
 class AdsbBO {
@@ -39,17 +40,15 @@ class AdsbBO {
         $httpRequest->exec();
 
         $track = new Track();
-
-        $track->setIcao($request->icao);
-        $track->setCallsign($request->callsign);
-        $track->setLatitude($request->latitude);
-        $track->setLongitude($request->longitude);
-        $track->setTrack($request->track);
-        $track->setAltitude($request->altitude);
-        $track->setGroundSpeed($request->groundSpeed);
-        $track->setVerticalSpeed($request->verticalSpeed);
-        $track->setSquawk($request->squawk);
-
+        $track->icao = $request->icao;
+        $track->callsign = $request->callsign;
+        $track->latitude = $request->latitude;
+        $track->longitude = $request->longitude;
+        $track->track = $request->track;
+        $track->altitude = $request->altitude;
+        $track->groundSpeed = $request->groundSpeed;
+        $track->verticalSpeed = $request->verticalSpeed;
+        $track->squawk = $request->squawk;
         $track->save();
     }
 }
