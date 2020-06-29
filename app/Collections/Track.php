@@ -10,6 +10,9 @@ class Track extends Eloquent {
     protected $connection = 'mongodb';
     protected $collection = 'track';
 
+    const CREATED_AT = 'createdAt';
+    const UPDATED_AT = 'updatedAt';
+
     protected $fillable = [
         'icao',
         'callsign',
