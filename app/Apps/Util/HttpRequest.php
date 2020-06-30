@@ -11,6 +11,7 @@ class HttpRequest {
     private $bearer = false;
     private $basic = false;
     private $jsonBody = false;
+    private $requestType = 'sync';
     private $contentType;
     private $accept;
     private $userAgent;
@@ -51,6 +52,11 @@ class HttpRequest {
         curl_setopt($ch, CURLINFO_HEADER_OUT, true);
         curl_setopt($ch, CURLOPT_HEADER, true);
 
+        if($this->requestType == 'async') {
+            curl_setopt($ch, CURLOPT_TIMEOUT, 1);
+            curl_setopt($ch, CURLOPT_NOSIGNAL, 1);
+        }
+
         $response = curl_exec($ch);
 
         $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
@@ -90,6 +96,11 @@ class HttpRequest {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+
+        if($this->requestType == 'async') {
+            curl_setopt($ch, CURLOPT_TIMEOUT, 1);
+            curl_setopt($ch, CURLOPT_NOSIGNAL, 1);
+        }
 
         $response = curl_exec($ch);
 
@@ -221,6 +232,10 @@ class HttpRequest {
 
     public function setFields($fields) {
         $this->fields = $fields;
+    }
+
+    public function setRequestType($requestType) {
+        $this->requestType = $requestType;
     }
 
     public function getResponse() {
