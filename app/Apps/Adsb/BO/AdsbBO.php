@@ -33,7 +33,7 @@ class AdsbBO {
         $flight = Flight::where('icao', $request->icao)
         ->where('updatedAt', '>=', (new DateTime())->sub(new DateInterval('PT600S')))
         ->orderBy('updatedAt', 'desc')
-        ->get();
+        ->first();
 
         if(count($flight) > 0) {
             if(!is_null($request->callsign)) $flight->callsign = $request->callsign;

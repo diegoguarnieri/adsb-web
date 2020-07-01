@@ -43,6 +43,10 @@ class TestController extends Controller {
         ->take(5)
         ->get();
 
+        /*$track = Track::where('icao', 'E48C04')
+        ->orderBy('updatedAt', 'desc')
+        ->first();*/
+
         $response = $track;
         return response()->json($response, 200);
     }
