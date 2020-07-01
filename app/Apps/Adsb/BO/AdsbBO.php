@@ -35,17 +35,7 @@ class AdsbBO {
         ->orderBy('updatedAt', 'desc')
         ->first();
 
-        if(count($flight) > 0) {
-            if(!is_null($request->callsign)) $flight->callsign = $request->callsign;
-            if(!is_null($request->latitude)) $flight->latitude = $request->latitude;
-            if(!is_null($request->longitude)) $flight->longitude = $request->longitude;
-            if(!is_null($request->track)) $flight->track = $request->track;
-            if(!is_null($request->altitude)) $flight->altitude = $request->altitude;
-            if(!is_null($request->groundSpeed)) $flight->groundSpeed = $request->groundSpeed;
-            if(!is_null($request->verticalSpeed)) $flight->verticalSpeed = $request->verticalSpeed;
-            if(!is_null($request->squawk)) $flight->squawk = $request->squawk;
-            $flight->save();
-        } else {
+        if($flight === null) {
             $flight = new Flight();
             $flight->icao = $request->icao;
             $flight->callsign = $request->callsign;
@@ -56,6 +46,16 @@ class AdsbBO {
             $flight->groundSpeed = $request->groundSpeed;
             $flight->verticalSpeed = $request->verticalSpeed;
             $flight->squawk = $request->squawk;
+            $flight->save();
+        } else {
+            if(!is_null($request->callsign)) $flight->callsign = $request->callsign;
+            if(!is_null($request->latitude)) $flight->latitude = $request->latitude;
+            if(!is_null($request->longitude)) $flight->longitude = $request->longitude;
+            if(!is_null($request->track)) $flight->track = $request->track;
+            if(!is_null($request->altitude)) $flight->altitude = $request->altitude;
+            if(!is_null($request->groundSpeed)) $flight->groundSpeed = $request->groundSpeed;
+            if(!is_null($request->verticalSpeed)) $flight->verticalSpeed = $request->verticalSpeed;
+            if(!is_null($request->squawk)) $flight->squawk = $request->squawk;
             $flight->save();
         }
 
