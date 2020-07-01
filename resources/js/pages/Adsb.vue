@@ -173,7 +173,7 @@ export default {
 
             console.log(track)
 
-            if(this.tracks[track.id].id === undefined) {
+            if(this.tracks[track.id] === undefined) {
                 var obj = {
                     icao: track.icao,
                     callsign: track.callsign,
