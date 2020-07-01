@@ -5,6 +5,7 @@ namespace App\Apps\Adsb\BO;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use DateTime;
+use DateInterval;
 use App\Collections\Track;
 use App\Collections\Flight;
 use App\Apps\Util\HttpRequest;
