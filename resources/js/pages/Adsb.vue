@@ -173,15 +173,32 @@ export default {
 
             console.log(track)
 
-            if(track.callsign != null && track.callsign != '') this.tracks[track.id].callsign = track.callsign
-            if(track.latitude != null && track.latitude != '') this.tracks[track.id].latitude = track.latitude
-            if(track.longitude != null && track.longitude != '') this.tracks[track.id].longitude = track.longitude
-            if(track.track != null && track.track != '') this.tracks[track.id].track = track.track
-            if(track.altitude != null && track.altitude != '') this.tracks[track.id].altitude = track.altitude
-            if(track.groundSpeed != null && track.groundSpeed != '') this.tracks[track.id].groundSpeed = track.groundSpeed
-            if(track.verticalSpeed != null && track.verticalSpeed != '') this.tracks[track.id].verticalSpeed = track.verticalSpeed
-            if(track.squawk != null && track.squawk != '') this.tracks[track.id].squawk = track.squawk
-            if(track.timestamp != null && track.timestamp != '') this.tracks[track.id].timestamp = track.timestamp
+            if(this.tracks[track.id].id === undefined) {
+                var obj = {
+                    icao: track.icao,
+                    callsign: track.callsign,
+                    latitude: track.latitude,
+                    longitude: track.longitude,
+                    track: track.track,
+                    altitude: track.altitude,
+                    groundSpeed: track.groundSpeed,
+                    verticalSpeed: track.verticalSpeed,
+                    squawk: track.squawk,
+                    timestamp: track.timestamp
+                }
+
+                this.tracks[track.id] = obj
+            } else {
+                if(track.callsign != null && track.callsign != '') this.tracks[track.id].callsign = track.callsign
+                if(track.latitude != null && track.latitude != '') this.tracks[track.id].latitude = track.latitude
+                if(track.longitude != null && track.longitude != '') this.tracks[track.id].longitude = track.longitude
+                if(track.track != null && track.track != '') this.tracks[track.id].track = track.track
+                if(track.altitude != null && track.altitude != '') this.tracks[track.id].altitude = track.altitude
+                if(track.groundSpeed != null && track.groundSpeed != '') this.tracks[track.id].groundSpeed = track.groundSpeed
+                if(track.verticalSpeed != null && track.verticalSpeed != '') this.tracks[track.id].verticalSpeed = track.verticalSpeed
+                if(track.squawk != null && track.squawk != '') this.tracks[track.id].squawk = track.squawk
+                if(track.timestamp != null && track.timestamp != '') this.tracks[track.id].timestamp = track.timestamp
+            }
         },
         updateTrack2: function(data) {
             var track = JSON.parse(data)
