@@ -16,7 +16,31 @@ class AdsbBO {
 
     }
 
-    public function storeTrack($request) {
+    public function active() {
+        $flights = Flight::orderBy('updatedAt', 'desc')
+        ->take(10)
+        ->get();
+
+        $tracks = array();
+        foreach($flights as $flightKey => $flight) {
+            $tracks[$flight->_id] = [
+                'icao' => $flight->icao,
+                'callsign' => $flight->callsign,
+                'latitude' => $flight->latitude,
+                'longitude' => $flight->longitude,
+                'track' => $flight->track,
+                'altitude' => $flight->altitude,
+                'groundSpeed' => $flight->groundSpeed,
+                'verticalSpeed' => $flight->verticalSpeed,
+                'squawk' => $flight->squawk,
+                'timestamp' => (new DateTime($flight->updatedAt))->format('d/m/Y H:i:s')
+            ];
+        }
+
+        return $tracks;
+    }
+
+    public function store($request) {
 
         $track = new Track();
         $track->icao = $request->icao;
@@ -60,16 +84,17 @@ class AdsbBO {
         }
 
         $fields = array(
-            'icao' => $request->icao,
-            'callsign' => $request->callsign,
-            'latitude' => $request->latitude,
-            'longitude' => $request->longitude,
-            'track' => $request->track,
-            'altitude' => $request->altitude,
-            'groundSpeed' => $request->groundSpeed,
-            'verticalSpeed' => $request->verticalSpeed,
-            'squawk' => $request->squawk,
-            'timestamp' => (new DateTime())->format('Y-m-d H:i:s.u')
+            'id' => $flight->_id,
+            'icao' => $flight->icao,
+            'callsign' => $flight->callsign,
+            'latitude' => $flight->latitude,
+            'longitude' => $flight->longitude,
+            'track' => $flight->track,
+            'altitude' => $flight->altitude,
+            'groundSpeed' => $flight->groundSpeed,
+            'verticalSpeed' => $flight->verticalSpeed,
+            'squawk' => $flight->squawk,
+            'timestamp' => (new DateTime($flight->updatedAt))->format('d/m/Y H:i:s')
         );
 
         $httpRequest = new HttpRequest();
