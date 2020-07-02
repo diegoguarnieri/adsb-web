@@ -173,7 +173,7 @@ export default {
 
             console.log(track)
 
-            if(this.tracks[track.id] === undefined) {
+            if(typeof this.tracks[track.id] == "undefined") {
                 var obj = {
                     icao: track.icao,
                     callsign: track.callsign,
@@ -189,7 +189,7 @@ export default {
 
                 this.tracks[track.id] = obj
 
-                console.log(this.tracks)
+                console.log("new",this.tracks)
             } else {
                 if(track.callsign != null && track.callsign != '') this.tracks[track.id].callsign = track.callsign
                 if(track.latitude != null && track.latitude != '') this.tracks[track.id].latitude = track.latitude
