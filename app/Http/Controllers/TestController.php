@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use DateTime;
 use DateInterval;
-use App\Collections\Test;
+use App\Collections\Flight;
 use App\Collections\Track;
 
 class TestController extends Controller {
@@ -39,15 +39,26 @@ class TestController extends Controller {
         ->get()
         ;*/
 
-        $track = Track::orderBy('updatedAt', 'desc')
+        /*$track = Track::orderBy('updatedAt', 'desc')
         ->take(5)
+        ->get();*/
+
+        //icao and (latitude or (latitude and longitude))
+        $flight = Flight::where('icao', 'A2D2AE')
+        ->where(function ($query) {
+            $query->where('latitude', '-23.40161')
+            ->orWhere(function ($query) {
+                $query->where('latitude', '-23.47183')
+                ->where('longitude', '-51.27399');
+            });
+        })
         ->get();
 
         /*$track = Track::where('icao', 'E48C04')
         ->orderBy('updatedAt', 'desc')
         ->first();*/
 
-        $response = $track;
+        $response = $flight;
         return response()->json($response, 200);
     }
 }

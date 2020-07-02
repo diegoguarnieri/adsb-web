@@ -54,8 +54,20 @@ class AdsbBO {
         $track->squawk = $request->squawk;
         $track->save();
 
-        $flight = Flight::where('icao', $request->icao)
+        /*$flight = Flight::where('icao', $request->icao)
         ->where('updatedAt', '>=', (new DateTime())->sub(new DateInterval('PT600S')))
+        ->orderBy('updatedAt', 'desc')
+        ->first();*/
+
+        //icao and (updatedAt or (updatedAt and callsign))
+        $flight = Flight::where('icao', $request->icao)
+        ->where(function ($query) {
+            $query->where('updatedAt', '>=', (new DateTime())->sub(new DateInterval('PT10M')))
+            ->orWhere(function ($query) {
+                $query->where('updatedAt', '>=', (new DateTime())->sub(new DateInterval('PT20H')))
+                ->where('callsign', $request->callsign);
+            });
+        })
         ->orderBy('updatedAt', 'desc')
         ->first();
 

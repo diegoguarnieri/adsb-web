@@ -189,7 +189,9 @@ export default {
 
                 this.tracks[track.id] = obj
 
-                console.log("new",this.tracks)
+                this.$forceUpdate()
+
+                console.log(this.tracks)
             } else {
                 if(track.callsign != null && track.callsign != '') this.tracks[track.id].callsign = track.callsign
                 if(track.latitude != null && track.latitude != '') this.tracks[track.id].latitude = track.latitude
