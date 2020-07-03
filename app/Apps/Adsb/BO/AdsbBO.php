@@ -61,9 +61,9 @@ class AdsbBO {
 
         //icao and (updatedAt or (updatedAt and callsign))
         $flight = Flight::where('icao', $request->icao)
-        ->where(function ($query) {
+        ->where(function ($query) use ($request) {
             $query->where('updatedAt', '>=', (new DateTime())->sub(new DateInterval('PT10M')))
-            ->orWhere(function ($query) {
+            ->orWhere(function ($query) use ($request) {
                 $query->where('updatedAt', '>=', (new DateTime())->sub(new DateInterval('PT20H')))
                 ->where('callsign', $request->callsign);
             });

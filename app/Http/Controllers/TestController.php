@@ -43,10 +43,11 @@ class TestController extends Controller {
         ->take(5)
         ->get();*/
 
+        $lat1 = '-23.40161';
         //icao and (latitude or (latitude and longitude))
         $flight = Flight::where('icao', 'A2D2AE')
-        ->where(function ($query) {
-            $query->where('latitude', '-23.40161')
+        ->where(function ($query) use ($lat1){
+            $query->where('latitude', $lat1)
             ->orWhere(function ($query) {
                 $query->where('latitude', '-23.47183')
                 ->where('longitude', '-51.27399');
