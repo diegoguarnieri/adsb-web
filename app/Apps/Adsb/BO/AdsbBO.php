@@ -18,12 +18,13 @@ class AdsbBO {
 
     public function active() {
         $flights = Flight::where('updatedAt', '>=', (new DateTime())->sub(new DateInterval('P1D')))
-        ->orderBy('updatedAt', 'asc')
+        ->orderBy('updatedAt', 'desc')
         ->get();
 
         $tracks = array();
         foreach($flights as $flightKey => $flight) {
             $tracks[$flight->_id] = [
+                'id' => $flight->_id,
                 'icao' => $flight->icao,
                 'callsign' => $flight->callsign,
                 'latitude' => $flight->latitude,
@@ -33,7 +34,8 @@ class AdsbBO {
                 'groundSpeed' => $flight->groundSpeed,
                 'verticalSpeed' => $flight->verticalSpeed,
                 'squawk' => $flight->squawk,
-                'timestamp' => (new DateTime($flight->updatedAt))->format('d/m/Y H:i:s')
+                'updatedAt' => (new DateTime($flight->updatedAt))->format('d/m/Y H:i:s'),
+                'timestamp' => (new DateTime($flight->updatedAt))->format('U')
             ];
         }
 

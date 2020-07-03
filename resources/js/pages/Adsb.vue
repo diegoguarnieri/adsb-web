@@ -31,11 +31,11 @@
                                 <th>Ground Speed</th>
                                 <th>Vertical Speed</th>
                                 <th>Squawk</th>
-                                <th>Timestamp</th>
+                                <th>Updated At</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(track, key) in tracks.slice().reverse()" :key="key">
+                            <tr v-for="(track, key) in sortedTracks" :key="key">
                                 <td>{{ track.icao }}</td>
                                 <td>{{ track.callsign }}</td>
                                 <td>{{ track.latitude }}</td>
@@ -45,7 +45,7 @@
                                 <td>{{ track.groundSpeed }}</td>
                                 <td>{{ track.verticalSpeed }}</td>
                                 <td>{{ track.squawk }}</td>
-                                <td>{{ track.timestamp }}</td>
+                                <td>{{ track.updatedAt }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -115,9 +115,10 @@ Vue.use(VueWebSocket, 'ws://172.16.3.120:2020', {
 export default {
     data() {
         return {
-            tracks: [],
+            tracks: {},
             socketStatus: '',
-            socketEvents: []
+            socketEvents: [],
+            randon: ''
         }
     },
     beforeMount() {
@@ -167,6 +168,23 @@ export default {
             this.updateTrack(data.data)
         }
     },
+    computed: {
+        sortedTracks: function() {
+            if(this.randon == '') {
+                console.log(this.randon)
+            }
+
+            var tracks = []
+            Object.keys(this.tracks).forEach(key => {
+                tracks.push(this.tracks[key])
+            })
+
+            tracks.sort((a, b) => (a.timestamp < b.timestamp) ? 1 : -1)
+
+            console.log('sort',tracks)
+            return tracks
+        }
+    },
     methods: {
         updateTrack: function(data) {
             var track = JSON.parse(data)
@@ -184,14 +202,15 @@ export default {
                     groundSpeed: track.groundSpeed,
                     verticalSpeed: track.verticalSpeed,
                     squawk: track.squawk,
+                    updatedAt: track.updatedAt,
                     timestamp: track.timestamp
                 }
 
                 this.tracks[track.id] = obj
 
-                this.$forceUpdate()
+                //this.$forceUpdate()
 
-                console.log(this.tracks)
+                console.log('new',this.tracks)
             } else {
                 if(track.callsign != null && track.callsign != '') this.tracks[track.id].callsign = track.callsign
                 if(track.latitude != null && track.latitude != '') this.tracks[track.id].latitude = track.latitude
@@ -201,8 +220,12 @@ export default {
                 if(track.groundSpeed != null && track.groundSpeed != '') this.tracks[track.id].groundSpeed = track.groundSpeed
                 if(track.verticalSpeed != null && track.verticalSpeed != '') this.tracks[track.id].verticalSpeed = track.verticalSpeed
                 if(track.squawk != null && track.squawk != '') this.tracks[track.id].squawk = track.squawk
-                if(track.timestamp != null && track.timestamp != '') this.tracks[track.id].timestamp = track.timestamp
+                this.tracks[track.id].updatedAt = track.updatedAt
+                this.tracks[track.id].timestamp = track.timestamp
             }
+
+            //only used to activate the filter - https://forum.vuejs.org/t/computed-property-not-updating/21148/11
+            this.randon = Math.floor(Math.random() * 100) * -1
         },
         updateTrack2: function(data) {
             var track = JSON.parse(data)
@@ -299,14 +322,31 @@ export default {
         getInitialItems: function() {
             axios.get('adsb/active')
             .then(response => {
-                this.tracks = response.data.tracks
+                //this.tracks = response.data.tracks
                 //console.log(this.tracks)
-
                 /*Object.keys(items).forEach(key => {
                     this.items.push(items[key])
                 })
-
                 this.sortItems()*/
+
+                /*let keys = []
+                Object.keys(response.data.tracks).forEach(key => {
+                    keys.push(key)
+                    //tracks[key] = response.data.tracks[key]
+                })
+
+                var tracks = {}
+                for(var i = keys.length - 1; i >= 0; i--) {
+                    tracks[keys[i]] = response.data.tracks[keys[i]]
+                }*/
+                //------------
+
+                this.tracks = response.data.tracks
+
+                //this.$forceUpdate()
+
+
+                console.log(this.tracks)
             })
             .catch(error => {
                 console.log(error)
