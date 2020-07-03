@@ -105,7 +105,10 @@
 import Vue from 'vue'
 import VueWebSocket from 'vue-native-websocket'
 
-Vue.use(VueWebSocket, 'ws://172.16.3.120:2020', { 
+//var socketHost = 'ws://172.16.3.120:2020'
+var socketHost = 'ws://vpndiego.ddns.net:2020'
+
+Vue.use(VueWebSocket, socketHost, { 
     format: 'json',
     reconnection: true,
     reconnectionAttempts: 5000,
@@ -116,13 +119,18 @@ export default {
     data() {
         return {
             tracks: {},
-            socketStatus: '',
+            socketStatus: 'close',
             socketEvents: [],
             randon: ''
         }
     },
     beforeMount() {
+        
+    },
+    mounted() {
         this.getInitialItems()
+
+        
 
         this.$options.sockets.onopen = (data) => {
             event = {
@@ -160,13 +168,13 @@ export default {
             this.socketEvents.push(event)
         }
 
-        /*this.$options.sockets.reconnect = (data) => {
-            console.log('reconnect',data)
-        }*/
-
         this.$options.sockets.onmessage = (data) => {
             this.updateTrack(data.data)
         }
+
+        /*this.$options.sockets.reconnect = (data) => {
+            console.log('reconnect',data)
+        }*/
     },
     computed: {
         sortedTracks: function() {
