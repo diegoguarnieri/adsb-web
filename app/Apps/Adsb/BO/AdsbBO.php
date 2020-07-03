@@ -108,7 +108,8 @@ class AdsbBO {
             'groundSpeed' => $flight->groundSpeed,
             'verticalSpeed' => $flight->verticalSpeed,
             'squawk' => $flight->squawk,
-            'timestamp' => (new DateTime($flight->updatedAt))->format('d/m/Y H:i:s')
+            'updatedAt' => (new DateTime($flight->updatedAt))->format('d/m/Y H:i:s'),
+            'timestamp' => (new DateTime($flight->updatedAt))->format('U')
         );
 
         $httpRequest = new HttpRequest();
