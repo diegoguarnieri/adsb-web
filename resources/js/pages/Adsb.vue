@@ -171,7 +171,7 @@ export default {
     computed: {
         sortedTracks: function() {
             if(this.randon == '') {
-                console.log(this.randon)
+                console.log('randon',this.randon)
             }
 
             var tracks = []
@@ -189,7 +189,7 @@ export default {
         updateTrack: function(data) {
             var track = JSON.parse(data)
 
-            console.log(track)
+            console.log('track',track)
 
             if(typeof this.tracks[track.id] == "undefined") {
                 var obj = {
@@ -346,10 +346,10 @@ export default {
                 //this.$forceUpdate()
 
 
-                console.log(this.tracks)
+                console.log('trakcs',this.tracks)
             })
             .catch(error => {
-                console.log(error)
+                console.log('error',error)
             })
         }
     }
