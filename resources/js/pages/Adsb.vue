@@ -35,7 +35,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(track, key) in tracks" :key="key">
+                            <tr v-for="(track, key) in tracks.slice().reverse()" :key="key">
                                 <td>{{ track.icao }}</td>
                                 <td>{{ track.callsign }}</td>
                                 <td>{{ track.latitude }}</td>

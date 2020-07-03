@@ -18,7 +18,7 @@ class AdsbBO {
 
     public function active() {
         $flights = Flight::where('updatedAt', '>=', (new DateTime())->sub(new DateInterval('P1D')))
-        ->orderBy('updatedAt', 'desc')
+        ->orderBy('updatedAt', 'asc')
         ->get();
 
         $tracks = array();
