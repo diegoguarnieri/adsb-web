@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+        <!--<flight-map />-->
         <div class="card" style="margin-top: 1rem">
             <div class="card-header clearfix">
                 <div class="float-left">
@@ -112,7 +113,9 @@
                     <div class="modal-body">
                         <div class="card">
                             <div class="card-body">
-                                <flight-map :lines="coordinates" />
+                                <!--<google-flight-map :lines="coordinates" />-->
+
+                                <flight-map :coordinates="coordinates" :version="version" />
                             </div>
                         </div>
                     </div>
@@ -143,7 +146,8 @@ export default {
             socketStatus: 'close',
             socketEvents: [],
             randon: '',
-            coordinates: []
+            coordinates: [],
+            version: 0
         }
     },
     beforeMount() {
@@ -217,7 +221,7 @@ export default {
         map: function(id) {
             console.log('id',id)
 
-            axios.get('adsb/path/' + id)
+            axios.get('adsb/coordinate/' + id)
             .then(response => {
                 this.coordinates = response.data.coordinates
                 console.log(this.coordinates)
@@ -227,6 +231,8 @@ export default {
             })
 
             $('#map').modal('show')
+
+            this.version++
         },
         trackDetail: function(id) {
 

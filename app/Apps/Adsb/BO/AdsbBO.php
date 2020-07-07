@@ -28,6 +28,25 @@ class AdsbBO {
         ->get();
 
         $coordinates = array();
+        foreach($tracks as $trackKey => $track) {
+            $coordinates[] = [(float) $track->latitude, (float) $track->longitude];
+        }
+
+        return $coordinates;
+    }
+
+    public function path($id) {
+        $flight = Flight::find($id);
+
+        $tracks = Track::where('icao', $flight->icao)
+        ->where('createdAt', '>=', new DateTime($flight->createdAt))
+        ->where('createdAt', '<=', new DateTime($flight->updatedAt))
+        ->whereNotNull('latitude')
+        ->whereNotNull('longitude')
+        ->orderBy('createdAt')
+        ->get();
+
+        $coordinates = array();
         $oldTrack = null;
         foreach($tracks as $trackKey => $track) {
             if(!is_null($oldTrack)) {

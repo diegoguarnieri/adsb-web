@@ -13,13 +13,23 @@ class AdsbController extends Controller {
         
     }
 
-    public function path(Request $request) {
-        Log::info('AdsbController->path');
+    public function coordinate(Request $request) {
+        Log::info('AdsbController->coordinate');
 
         $adsbBO = new AdsbBO();
         $coordinates = $adsbBO->coordinate($request->id);
 
         $response = ['coordinates' => $coordinates];
+        return response()->json($response, 200);
+    }
+
+    public function path(Request $request) {
+        Log::info('AdsbController->path');
+
+        $adsbBO = new AdsbBO();
+        $paths = $adsbBO->path($request->id);
+
+        $response = ['paths' => $path];
         return response()->json($response, 200);
     }
 

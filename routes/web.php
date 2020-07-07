@@ -6,6 +6,7 @@ Route::get('adsb', function () {
 
 Route::get('adsb/active', 'AdsbController@active');
 Route::get('adsb/path/{id}', 'AdsbController@path');
+Route::get('adsb/coordinate/{id}', 'AdsbController@coordinate');
 
 //Route::get('test', 'TestController@insert');
 Route::get('test/get', 'TestController@get');
