@@ -16,6 +16,36 @@ class AdsbBO {
 
     }
 
+    public function coordinate($id) {
+        $flight = Flight::find($id);
+
+        $tracks = Track::where('icao', $flight->icao)
+        ->where('createdAt', '>=', new DateTime($flight->createdAt))
+        ->where('createdAt', '<=', new DateTime($flight->updatedAt))
+        ->whereNotNull('latitude')
+        ->whereNotNull('longitude')
+        ->orderBy('createdAt')
+        ->get();
+
+        $coordinates = array();
+        $oldTrack = null;
+        foreach($tracks as $trackKey => $track) {
+            if(!is_null($oldTrack)) {
+                $coordinates[] = [
+                    'id' => $trackKey,
+                    'path' => [
+                        ['lat' => (float) $oldTrack->latitude, 'lng' => (float) $oldTrack->longitude],
+                        ['lat' => (float) $track->latitude, 'lng' => (float) $track->longitude]
+                    ]
+                ];
+            }
+
+            $oldTrack = $track;
+        }
+
+        return $coordinates;
+    }
+
     public function active() {
         $flights = Flight::where('updatedAt', '>=', (new DateTime())->sub(new DateInterval('P1D')))
         ->orderBy('updatedAt', 'desc')

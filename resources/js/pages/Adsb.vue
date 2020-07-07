@@ -22,6 +22,7 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
+                                <th></th>
                                 <th>ICAO</th>
                                 <th>Callsign</th>
                                 <th>Latitude</th>
@@ -36,6 +37,13 @@
                         </thead>
                         <tbody>
                             <tr v-for="(track, key) in sortedTracks" :key="key">
+                                <td>
+                                    <a href="#" @click="map(track.id)">
+                                        <svg class="bi" width="14" height="14" fill="currentColor">
+                                            <use xlink:href="css/bootstrap-icons.svg#map"/>
+                                        </svg>
+                                    </a>
+                                </td>
                                 <td>{{ track.icao }}</td>
                                 <td>{{ track.callsign }}</td>
                                 <td>{{ track.latitude }}</td>
@@ -85,16 +93,29 @@
                                 </table>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                        <!--<div class="form-group">
-                            <label for="taxRate">Tax Rate</label>
-                            <div class="input-group">
-                                <input v-model="taxRate" type="text" class="form-control">
-                            </div>
-                        </div>-->
+        <!--Modal Map-->
+        <div class="modal fade" id="map" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Flight Route</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
 
-                    <!--<div class="modal-footer"></div>-->
+                    <div class="modal-body">
+                        <div class="card">
+                            <div class="card-body">
+                                <flight-map :lines="coordinates" />
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -121,7 +142,8 @@ export default {
             tracks: {},
             socketStatus: 'close',
             socketEvents: [],
-            randon: ''
+            randon: '',
+            coordinates: []
         }
     },
     beforeMount() {
@@ -129,8 +151,6 @@ export default {
     },
     mounted() {
         this.getInitialItems()
-
-        
 
         this.$options.sockets.onopen = (data) => {
             event = {
@@ -194,6 +214,23 @@ export default {
         }
     },
     methods: {
+        map: function(id) {
+            console.log('id',id)
+
+            axios.get('adsb/path/' + id)
+            .then(response => {
+                this.coordinates = response.data.coordinates
+                console.log(this.coordinates)
+            })
+            .catch(error => {
+                console.log('error',error)
+            })
+
+            $('#map').modal('show')
+        },
+        trackDetail: function(id) {
+
+        },
         updateTrack: function(data) {
             var track = JSON.parse(data)
 
@@ -235,91 +272,6 @@ export default {
             //only used to activate the filter - https://forum.vuejs.org/t/computed-property-not-updating/21148/11
             this.randon = Math.floor(Math.random() * 100) * -1
         },
-        updateTrack2: function(data) {
-            var track = JSON.parse(data)
-
-            //var items = this.items
-
-            var found = false;
-            /*Object.keys(items).forEach(key => {
-                if(String(this.items[key].icao).indexOf(item.icao) > -1) {
-                    this.items[key].callsign = item.callsign
-                    this.items[key].latitude = item.latitude
-                    this.items[key].longitude = item.longitude
-                    this.items[key].track = item.track
-                    this.items[key].altitude = item.altitude
-                    this.items[key].groundSpeed = item.groundSpeed
-                    this.items[key].verticalSpeed = item.verticalSpeed
-                    this.items[key].squawk = item.squawk
-                    this.items[key].timestamp = item.timestamp
-
-                    found = true
-                }
-            })*/
-
-            for(let i = 0; i < this.items.length; i++) {
-                if(String(this.items[i].icao).indexOf(item.icao) > -1) {
-                    if(item.callsign != null && item.callsign != '' && item.callsign != 'RM' && item.callsign != 'SL') {
-                        this.items[i].callsign = item.callsign
-                    }
-
-                    if(item.latitude != null && item.latitude != '') {
-                        this.items[i].latitude = item.latitude
-                    }
-
-                    if(item.longitude != null && item.longitude != '') {
-                        this.items[i].longitude = item.longitude
-                    }
-
-                    if(item.track != null && item.track != '') {
-                        this.items[i].track = item.track
-                    }
-
-                    if(item.altitude != null && item.altitude != '') {
-                        this.items[i].altitude = item.altitude
-                    }
-
-                    if(item.groundSpeed != null && item.groundSpeed != '') {
-                        this.items[i].groundSpeed = item.groundSpeed
-                    }
-
-                    if(item.verticalSpeed != null && item.verticalSpeed != '') {
-                        this.items[i].verticalSpeed = item.verticalSpeed
-                    }
-                    
-                    if(item.squawk != null && item.squawk != '') {
-                        this.items[i].squawk = item.squawk
-                    }
-
-                    if(item.timestamp != null && item.timestamp != '') {
-                        this.items[i].timestamp = item.timestamp
-                    }
-
-                    found = true
-                }
-            }
-
-            if(!found) {
-                var obj = {
-                    icao: item.icao,
-                    callsign: item.callsign,
-                    latitude: item.latitude,
-                    longitude: item.longitude,
-                    track: item.track,
-                    altitude: item.altitude,
-                    groundSpeed: item.groundSpeed,
-                    verticalSpeed: item.verticalSpeed,
-                    squawk: item.squawk,
-                    timestamp: item.timestamp
-                }
-
-                this.items.push(obj)
-            }
-
-            this.sortItems()
-
-            console.log(this.items)
-        },
         /*sortItems: function() {
             var items = this.items
 
@@ -330,31 +282,9 @@ export default {
         getInitialItems: function() {
             axios.get('adsb/active')
             .then(response => {
-                //this.tracks = response.data.tracks
-                //console.log(this.tracks)
-                /*Object.keys(items).forEach(key => {
-                    this.items.push(items[key])
-                })
-                this.sortItems()*/
-
-                /*let keys = []
-                Object.keys(response.data.tracks).forEach(key => {
-                    keys.push(key)
-                    //tracks[key] = response.data.tracks[key]
-                })
-
-                var tracks = {}
-                for(var i = keys.length - 1; i >= 0; i--) {
-                    tracks[keys[i]] = response.data.tracks[keys[i]]
-                }*/
-                //------------
-
                 this.tracks = response.data.tracks
 
-                //this.$forceUpdate()
-
-
-                console.log('trakcs',this.tracks)
+                console.log('tracks',this.tracks)
             })
             .catch(error => {
                 console.log('error',error)

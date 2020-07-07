@@ -24,6 +24,8 @@
         "vue-template-compiler": "^2.6.11"
     },
     "dependencies": {
+        "bootstrap-icons": "^1.0.0-alpha5",
+        "google-maps-api-loader": "^1.1.1",
         "vue-native-websocket": "^2.0.14"
     }
 }
