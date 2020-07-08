@@ -244,6 +244,7 @@ export default {
 
             if(typeof this.tracks[track.id] == "undefined") {
                 var obj = {
+                    id: track.id,
                     icao: track.icao,
                     callsign: track.callsign,
                     latitude: track.latitude,

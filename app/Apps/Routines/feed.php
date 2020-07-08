@@ -4,8 +4,6 @@ $host = "localhost";
 $port = "30003";
 $timeout = 15;
 $time = time();
-$total_packets = 0;
-$heartbeat = 300;
 
 $sock = socket_create(AF_INET, SOCK_STREAM, SOL_TCP) or die("Unable to create socket\n");
 
@@ -28,6 +26,21 @@ if(isset($sock)) {
     sleep(1);
 
     echo "\nSCAN MODE\n\n";
+    while(true) {
+        try {
+            readSocket($sock);
+        } catch (\Exception $e) {
+            var_dump($e);
+        }
+    }
+}
+
+function readSocket($sock) {
+    $heartbeat = 300;
+    $total_packets = 0;
+    $time = time();
+    $printed_heartbeat = true;
+
     while($buffer = socket_read($sock, 3000, PHP_NORMAL_READ)) {
         //ctrl-c to kill properly
         pcntl_signal_dispatch();
@@ -85,7 +98,7 @@ if(isset($sock)) {
 
                     $ch = curl_init();
 
-                    curl_setopt($ch, CURLOPT_URL, 'http://172.16.3.50/api/adsb');
+                    curl_setopt($ch, CURLOPT_URL, 'http://172.16.3.120/api/adsb');
                     //curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
                     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($fields));
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
