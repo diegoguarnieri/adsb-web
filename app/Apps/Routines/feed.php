@@ -23,10 +23,10 @@ if(isset($sock)) {
 
     echo "Connected!\n";
 
-    sleep(1);
+    for($i = 0; $i < 3; $i++) {
+        echo "\nSCAN MODE - $i\n\n";
+        sleep(1);
 
-    echo "\nSCAN MODE\n\n";
-    while(true) {
         try {
             readSocket($sock);
         } catch (\Exception $e) {
