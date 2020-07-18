@@ -45,7 +45,8 @@ export default {
         return {
             version: 1,
             //page: 'dashboard'
-            page: 'search'
+            //page: 'search'
+            page: 'realtime'
         }
     },
     methods: {

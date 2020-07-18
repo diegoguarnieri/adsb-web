@@ -1,12 +1,12 @@
 <?php
 
-Route::get('/', function () {
+Route::get('adsb', function () {
     return view('home');
 });
 
-Route::get('adsb', function () {
+/*Route::get('adsb', function () {
     return view('adsb');
-});
+});*/
 
 Route::get('adsb/active', 'AdsbController@active');
 Route::get('adsb/path/{id}', 'AdsbController@path');
