@@ -10,7 +10,7 @@ import L from 'leaflet'
 export default {
     props: {
         version: null,
-        coordinates: Array
+        configs: Object
     },
     watch: {
         version: function(newValue, oldValue) {
@@ -32,20 +32,48 @@ export default {
     },
     methods: {
         refresh: function() {
-            if(this.coordinates[0] !== undefined) {
-                this.map.setView(this.coordinates[0], 10)
+            if(this.configs.coordinates !== undefined) {
+
+                this.map.eachLayer((layer) => {
+                    console.log(layer)
+                    //layer.remove()
+                })
+
+                this.map.setView(this.configs.coordinates[0], 10)
+
+                //start point
+                var cicle = L.circle(
+                    this.configs.coordinates[0],
+                    {
+                        radius: 100,
+                        color: this.configs.properties.color
+                    }
+                ).addTo(this.map)
+
+                //end point
+                var width = 0.001
+                var bounds = [
+                    [
+                        this.configs.coordinates[this.configs.coordinates.length - 1][0] - width,
+                        this.configs.coordinates[this.configs.coordinates.length - 1][1] - width
+                    ],
+                    [
+                        this.configs.coordinates[this.configs.coordinates.length - 1][0] + width,
+                        this.configs.coordinates[this.configs.coordinates.length - 1][1] + width
+                    ]
+                ]
+                var rectangle = L.rectangle(
+                    bounds,
+                    this.configs.properties
+                ).addTo(this.map);
+
+                var polyline = L.polyline(
+                    this.configs.coordinates,
+                    this.configs.properties
+                ).addTo(this.map)
+                
+                this.map.fitBounds(polyline.getBounds());
             }
-
-            var polyline = L.polyline(this.coordinates, {color: 'red'}).addTo(this.map)
-
-            /*var latlngs = [
-                [-23.39076, -51.067],
-                [-23.39127, -51.06805],
-                [-23.39539, -51.07664],
-                [-23.39557, -51.07707],
-                [-23.39837, -51.08287]
-            ]
-            var polyline = L.polyline(latlngs, {color: 'red'}).addTo(this.map)*/
         },
         initMap: function() {
             this.map = L.map('flight-map').setView([-23.39076, -51.067], 10)
@@ -54,7 +82,7 @@ export default {
                 'https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/voyager/{z}/{x}/{y}.png',
                 {
                     maxZoom: 18,
-                    //attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attribution">CARTO</a>',
+                    attribution: '&copy; OpenStreetMap',
                 }
             )
 

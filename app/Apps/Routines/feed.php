@@ -9,7 +9,7 @@ $sock = socket_create(AF_INET, SOCK_STREAM, SOL_TCP) or die("Unable to create so
 
 if(isset($sock)) {
     echo "Connecting to dump1090...\n";
-    while (!@socket_connect($sock, $host, $port)) {
+    while(!@socket_connect($sock, $host, $port)) {
         $err = socket_last_error($sock);
 
         if($err == 115 || $err == 114) {

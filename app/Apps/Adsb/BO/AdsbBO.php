@@ -16,6 +16,40 @@ class AdsbBO {
 
     }
 
+    public function search($icao, $callsign, $startDate, $endDate) {
+        $query = Flight::query();
+
+        if(!is_null($icao) && $icao != '') {
+            $query = $query->where('icao', 'like', '%' . $icao . '%');
+        }
+
+        if(!is_null($callsign) && $callsign != '') {
+            $query = $query->where('callsign', 'like', '%' . $callsign . '%');
+        }
+
+        $flights = $query->orderBy('updatedAt', 'desc')->get();
+
+        $tracks = array();
+        foreach($flights as $flightKey => $flight) {
+            $tracks[$flight->_id] = [
+                'id' => $flight->_id,
+                'icao' => $flight->icao,
+                'callsign' => $flight->callsign,
+                'latitude' => $flight->latitude,
+                'longitude' => $flight->longitude,
+                'track' => $flight->track,
+                'altitude' => $flight->altitude,
+                'groundSpeed' => $flight->groundSpeed,
+                'verticalSpeed' => $flight->verticalSpeed,
+                'squawk' => $flight->squawk,
+                'updatedAt' => (new DateTime($flight->updatedAt))->format('d/m/Y H:i:s'),
+                'timestamp' => (new DateTime($flight->updatedAt))->format('U')
+            ];
+        }
+
+        return $tracks;
+    }
+
     public function coordinate($id) {
         $flight = Flight::find($id);
 

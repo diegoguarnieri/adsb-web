@@ -1,7 +1,6 @@
 <template>
-    <div class="container">
-        <!--<flight-map />-->
-        <div class="card" style="margin-top: 1rem">
+    <div>
+        <div class="card">
             <div class="card-header clearfix">
                 <div class="float-left">
                     <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#console">Console</button>
@@ -101,27 +100,9 @@
 
         <!--Modal Map-->
         <div class="modal fade" id="map" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Flight Route</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-
-                    <div class="modal-body">
-                        <div class="card">
-                            <div class="card-body">
-                                <!--<google-flight-map :lines="coordinates" />-->
-
-                                <flight-map :coordinates="coordinates" :version="version" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <modal-flight :flightId="flightId"></modal-flight>
         </div>
+
     </div>
 </template>
 
@@ -146,8 +127,8 @@ export default {
             socketStatus: 'close',
             socketEvents: [],
             randon: '',
-            coordinates: [],
-            version: 0
+            version: 0,
+            flightId: ''
         }
     },
     beforeMount() {
@@ -195,10 +176,6 @@ export default {
         this.$options.sockets.onmessage = (data) => {
             this.updateTrack(data.data)
         }
-
-        /*this.$options.sockets.reconnect = (data) => {
-            console.log('reconnect',data)
-        }*/
     },
     computed: {
         sortedTracks: function() {
@@ -213,34 +190,20 @@ export default {
 
             tracks.sort((a, b) => (a.timestamp < b.timestamp) ? 1 : -1)
 
-            console.log('sort',tracks)
             return tracks
         }
     },
     methods: {
         map: function(id) {
-            console.log('id',id)
-
-            axios.get('adsb/coordinate/' + id)
-            .then(response => {
-                this.coordinates = response.data.coordinates
-                console.log(this.coordinates)
-            })
-            .catch(error => {
-                console.log('error',error)
-            })
+            this.flightId = id
 
             $('#map').modal('show')
-
-            this.version++
         },
         trackDetail: function(id) {
 
         },
         updateTrack: function(data) {
             var track = JSON.parse(data)
-
-            console.log('track',track)
 
             if(typeof this.tracks[track.id] == "undefined") {
                 var obj = {
@@ -259,10 +222,6 @@ export default {
                 }
 
                 this.tracks[track.id] = obj
-
-                //this.$forceUpdate()
-
-                console.log('new',this.tracks)
             } else {
                 if(track.callsign != null && track.callsign != '') this.tracks[track.id].callsign = track.callsign
                 if(track.latitude != null && track.latitude != '') this.tracks[track.id].latitude = track.latitude
@@ -279,15 +238,11 @@ export default {
             //only used to activate the filter - https://forum.vuejs.org/t/computed-property-not-updating/21148/11
             this.randon = Math.floor(Math.random() * 100) * -1
         },
-        /*sortItems: function() {
-            var items = this.items
-
-            items.sort((a, b) => (a.timestamp < b.timestamp) ? 1 : -1)
-
-            this.items = items
-        },*/
         getInitialItems: function() {
-            axios.get('adsb/active')
+            axios({
+                method: 'get',
+                url: 'adsb/active'
+            })
             .then(response => {
                 this.tracks = response.data.tracks
 
