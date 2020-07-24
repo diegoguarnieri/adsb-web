@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="card">
-            <div class="card-header clearfix">
+            <div class="card-header">
                 <div class="float-left">
                     <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#console">Console</button>
                 </div>

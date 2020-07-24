@@ -44,9 +44,9 @@ export default {
     data() {
         return {
             version: 1,
-            //page: 'dashboard'
+            page: 'dashboard'
             //page: 'search'
-            page: 'realtime'
+            //page: 'realtime'
         }
     },
     methods: {
