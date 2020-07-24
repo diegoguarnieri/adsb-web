@@ -17,7 +17,7 @@ Vue.component('google-map-line', require('./components/GoogleMapLine.vue').defau
 //Pages
 Vue.component('master', require('./pages/Master.vue').default)
 Vue.component('dashboard', require('./pages/Dashboard.vue').default)
-Vue.component('adsb', require('./pages/Adsb.vue').default)
+Vue.component('realtime', require('./pages/Realtime.vue').default)
 Vue.component('console', require('./pages/Console.vue').default)
 Vue.component('Search', require('./pages/Search.vue').default)
 
