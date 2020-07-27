@@ -17,7 +17,7 @@
     <body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
 
         <div id="app">
-            <adsb></adsb>
+            <realtime></realtime>
         </div>
 
         <!-- Scripts -->

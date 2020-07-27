@@ -17,3 +17,8 @@ Route::get('dashboard', 'DashboardController@index');
 
 //Route::get('test', 'TestController@insert');
 Route::get('test/get', 'TestController@get');
+
+
+Route::get('adsb2', function () {
+    return view('adsb');
+});

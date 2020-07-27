@@ -8,8 +8,8 @@
             <div class="list-group list-group-flush">
                 <a href="#" @click="loadPage('dashboard')" class="list-group-item list-group-item-action bg-light">Dashboard</a>
                 <a href="#" @click="loadPage('realtime')" class="list-group-item list-group-item-action bg-light">Realtime</a>
-                <a href="#" @click="loadPage('console')" class="list-group-item list-group-item-action bg-light">Console</a>
                 <a href="#" @click="loadPage('search')" class="list-group-item list-group-item-action bg-light">Search</a>
+                <!--<a href="#" @click="loadPage('console')" class="list-group-item list-group-item-action bg-light">Console</a>-->
                 <!--<a href="#" class="list-group-item list-group-item-action bg-light">Profile</a>
                 <a href="#" class="list-group-item list-group-item-action bg-light">Status</a>-->
             </div>

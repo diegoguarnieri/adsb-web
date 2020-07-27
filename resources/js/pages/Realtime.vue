@@ -113,12 +113,21 @@ import VueWebSocket from 'vue-native-websocket'
 //var socketHost = 'ws://172.16.3.120:2020'
 var socketHost = 'ws://vpndiego.ddns.net:2020'
 
-Vue.use(VueWebSocket, socketHost, { 
+/*Vue.use(VueWebSocket, socketHost, { 
     format: 'json',
     reconnection: true,
     reconnectionAttempts: 5000,
     reconnectionDelay: 1000
+})*/
+
+Vue.use(VueWebSocket, socketHost, {
+    connectManually: true,
+    reconnection: true,
+    reconnectionAttempts: 5000,
+    reconnectionDelay: 1000
 })
+
+const vm = new Vue()
 
 export default {
     data() {
@@ -130,9 +139,6 @@ export default {
             version: 0,
             flightId: ''
         }
-    },
-    beforeMount() {
-        
     },
     mounted() {
         this.getInitialItems()
@@ -161,6 +167,8 @@ export default {
             }
 
             this.socketStatus = 'close'
+
+            this.updateSocketStatus('close')
         }
 
         this.$options.sockets.onerror = (data) => {
@@ -174,8 +182,15 @@ export default {
         }
 
         this.$options.sockets.onmessage = (data) => {
+            this.updateSocketStatus('open')
             this.updateTrack(data.data)
         }
+
+        vm.$connect()
+
+        //vm.$connect('ws://localhost:9090/alternative/connection/', { format: 'json' })
+        
+        //vm.$disconnect()
     },
     computed: {
         sortedTracks: function() {
@@ -236,7 +251,7 @@ export default {
             }
 
             //only used to activate the filter - https://forum.vuejs.org/t/computed-property-not-updating/21148/11
-            this.randon = Math.floor(Math.random() * 100) * -1
+            this.randon = Math.floor(Math.random() * 100)
         },
         getInitialItems: function() {
             axios({
@@ -245,12 +260,13 @@ export default {
             })
             .then(response => {
                 this.tracks = response.data.tracks
-
-                console.log('tracks',this.tracks)
             })
             .catch(error => {
                 console.log('error',error)
             })
+        },
+        initializeSocket: function() {
+            console.log(this.$options.sockets)            
         }
     }
 }
