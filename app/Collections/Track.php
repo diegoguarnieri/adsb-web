@@ -14,6 +14,7 @@ class Track extends Eloquent {
     const UPDATED_AT = 'updatedAt';
 
     protected $fillable = [
+        'flightId',
         'icao',
         'callsign',
         'latitude',

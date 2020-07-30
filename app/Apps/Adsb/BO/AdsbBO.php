@@ -127,23 +127,6 @@ class AdsbBO {
 
     public function store($request) {
 
-        $track = new Track();
-        $track->icao = $request->icao;
-        $track->callsign = $request->callsign;
-        $track->latitude = $request->latitude;
-        $track->longitude = $request->longitude;
-        $track->track = $request->track;
-        $track->altitude = $request->altitude;
-        $track->groundSpeed = $request->groundSpeed;
-        $track->verticalSpeed = $request->verticalSpeed;
-        $track->squawk = $request->squawk;
-        $track->save();
-
-        /*$flight = Flight::where('icao', $request->icao)
-        ->where('updatedAt', '>=', (new DateTime())->sub(new DateInterval('PT600S')))
-        ->orderBy('updatedAt', 'desc')
-        ->first();*/
-
         //icao and (updatedAt or (updatedAt and callsign))
         $flight = Flight::where('icao', $request->icao)
         ->where(function ($query) use ($request) {
@@ -180,6 +163,20 @@ class AdsbBO {
             $flight->save();
         }
 
+        $track = new Track();
+        $track->flightId = $flight->_id;
+        $track->icao = $request->icao;
+        $track->callsign = $request->callsign;
+        $track->latitude = $request->latitude;
+        $track->longitude = $request->longitude;
+        $track->track = $request->track;
+        $track->altitude = $request->altitude;
+        $track->groundSpeed = $request->groundSpeed;
+        $track->verticalSpeed = $request->verticalSpeed;
+        $track->squawk = $request->squawk;
+        $track->save();
+
+        //to feed the realtime socket
         $fields = array(
             'id' => $flight->_id,
             'icao' => $flight->icao,
