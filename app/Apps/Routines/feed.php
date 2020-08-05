@@ -5,6 +5,8 @@ $port = "30003";
 $timeout = 15;
 $time = time();
 
+sleep(10);
+
 $sock = socket_create(AF_INET, SOCK_STREAM, SOL_TCP) or die("Unable to create socket\n");
 
 if(isset($sock)) {
@@ -113,6 +115,8 @@ function readSocket($sock) {
 
                     curl_exec($ch);
                     curl_close($ch);
+
+                    echo (new DateTime())->format('Y-m-d H:i:s') . "\n";
                 }
             }
         }

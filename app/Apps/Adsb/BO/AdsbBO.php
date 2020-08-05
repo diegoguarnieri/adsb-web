@@ -127,7 +127,7 @@ class AdsbBO {
 
     public function store($request) {
 
-        //icao and (updatedAt or (updatedAt and callsign))
+        //icao and (updatedAt >= now -10m or (updatedAt >= now -20h and callsign))
         $flight = Flight::where('icao', $request->icao)
         ->where(function ($query) use ($request) {
             $query->where('updatedAt', '>=', (new DateTime())->sub(new DateInterval('PT10M')))

@@ -167,8 +167,6 @@ export default {
             }
 
             this.socketStatus = 'close'
-
-            this.updateSocketStatus('close')
         }
 
         this.$options.sockets.onerror = (data) => {
@@ -182,7 +180,6 @@ export default {
         }
 
         this.$options.sockets.onmessage = (data) => {
-            this.updateSocketStatus('open')
             this.updateTrack(data.data)
         }
 
