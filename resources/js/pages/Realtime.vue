@@ -207,9 +207,8 @@ export default {
     },
     methods: {
         map: function(id) {
-            this.version++
-            
             this.flightId = id
+            this.version++
 
             $('#map').modal('show')
         },

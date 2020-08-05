@@ -9,11 +9,17 @@ import L from 'leaflet'
 
 export default {
     props: {
-        version: null,
-        configs: Object
+        configs: {
+            type: Object,
+            required: true
+        },
+        versionA: {
+            type: Number,
+            required: true
+        }
     },
     watch: {
-        version: function(newValue, oldValue) {
+        versionA: function(newValue, oldValue) {
             var that = this
             setTimeout(function() {
                 that.map.invalidateSize() 
@@ -35,7 +41,7 @@ export default {
             if(this.configs.coordinates !== undefined) {
 
                 this.map.eachLayer((layer) => {
-                    console.log(layer)
+                    //console.log(layer)
                     //layer.remove()
                 })
 
@@ -80,6 +86,8 @@ export default {
 
             this.tileLayer = L.tileLayer(
                 'https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/voyager/{z}/{x}/{y}.png',
+                //'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                //'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png',
                 {
                     maxZoom: 18,
                     attribution: '&copy; OpenStreetMap',

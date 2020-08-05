@@ -11,7 +11,7 @@
             <div class="modal-body">
                 <div class="card">
                     <div class="card-body">
-                        <flight-map :configs="configs" :version="version" />
+                        <flight-map :configs="configs" :versionA="versionA" />
                     </div>
                 </div>
             </div>
@@ -25,20 +25,27 @@ export default {
         flightId: {
             type: String,
             required: true
+        },
+        version: {
+            type: Number,
+            required: true
         }
     },
     watch: {
-        flightId: function(newValue, oldValue) {
+        /*flightId: function(newValue, oldValue) {
             if(newValue != '') {
                 this.getCoordinates()
                 this.version++
             }
+        },*/
+        version: function(newValue, oldValue) {
+            this.getCoordinates()
         }
     },
     data() {
         return {
             configs: {},
-            version: 1
+            versionA: 0
         }
     },
     methods: {
@@ -54,12 +61,12 @@ export default {
                         color: '#' + Math.floor(Math.random()*16777215).toString(16)
                     }
                 }
+
+                this.versionA++
             })
             .catch(error => {
                 console.log('error',error)
             })
-
-            //this.version++
         }
     }
 }

@@ -64,7 +64,7 @@
 
         <!--Modal Map-->
         <div class="modal fade" id="map" tabindex="-1" role="dialog" aria-hidden="true">
-            <modal-flight :flightId="flightId"></modal-flight>
+            <modal-flight :flightId="flightId" :version="version"></modal-flight>
         </div>
     </div>
 </template>
@@ -74,7 +74,8 @@ export default {
     data() {
         return {
             fartherTracks: [],
-            flightId: ''
+            flightId: '',
+            version: 0
         }
     },
     beforeMount() {
@@ -83,6 +84,7 @@ export default {
     methods: {
         map: function(id) {
             this.flightId = id
+            this.version++
 
             $('#map').modal('show')
         },
