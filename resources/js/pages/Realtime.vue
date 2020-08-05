@@ -100,7 +100,7 @@
 
         <!--Modal Map-->
         <div class="modal fade" id="map" tabindex="-1" role="dialog" aria-hidden="true">
-            <modal-flight :flightId="flightId"></modal-flight>
+            <modal-flight :flightId="flightId" :version="version"></modal-flight>
         </div>
 
     </div>
@@ -207,6 +207,8 @@ export default {
     },
     methods: {
         map: function(id) {
+            this.version++
+            
             this.flightId = id
 
             $('#map').modal('show')
