@@ -53,9 +53,10 @@ class AdsbBO {
     public function coordinate($id) {
         $flight = Flight::find($id);
 
-        $tracks = Track::where('icao', $flight->icao)
+        $tracks = Track::where('flightId', $flight->_id)
+        /*$tracks = Track::where('icao', $flight->icao)
         ->where('createdAt', '>=', new DateTime($flight->createdAt))
-        ->where('createdAt', '<=', new DateTime($flight->updatedAt))
+        ->where('createdAt', '<=', new DateTime($flight->updatedAt))*/
         ->whereNotNull('latitude')
         ->whereNotNull('longitude')
         ->orderBy('createdAt')
@@ -72,9 +73,10 @@ class AdsbBO {
     public function path($id) {
         $flight = Flight::find($id);
 
-        $tracks = Track::where('icao', $flight->icao)
+        $tracks = Track::where('flightId', $flight->_id)
+        /*$tracks = Track::where('icao', $flight->icao)
         ->where('createdAt', '>=', new DateTime($flight->createdAt))
-        ->where('createdAt', '<=', new DateTime($flight->updatedAt))
+        ->where('createdAt', '<=', new DateTime($flight->updatedAt))*/
         ->whereNotNull('latitude')
         ->whereNotNull('longitude')
         ->orderBy('createdAt')
