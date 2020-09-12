@@ -9,11 +9,21 @@ use DateTime;
 use DateInterval;
 use App\Collections\Flight;
 use App\Collections\Track;
+use App\Jobs\TestQueue;
 
 class TestController extends Controller {
 
     public function __construct() {
         
+    }
+
+    public function queue(Request $request) {
+        Log::info('TestController->queue');
+
+        TestQueue::dispatch($request);
+
+        $response = [];
+        return response()->json($response, 200);
     }
 
     public function insert() {

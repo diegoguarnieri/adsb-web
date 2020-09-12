@@ -17,6 +17,7 @@ Route::get('dashboard', 'DashboardController@index');
 
 //Route::get('test', 'TestController@insert');
 Route::get('test/get', 'TestController@get');
+Route::get('test/queue', 'TestController@queue');
 
 
 Route::get('adsb2', function () {

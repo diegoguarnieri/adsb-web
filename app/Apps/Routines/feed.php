@@ -5,7 +5,7 @@ $port = "30003";
 $timeout = 15;
 $time = time();
 
-sleep(10);
+sleep(30);
 
 $sock = socket_create(AF_INET, SOCK_STREAM, SOL_TCP) or die("Unable to create socket\n");
 
