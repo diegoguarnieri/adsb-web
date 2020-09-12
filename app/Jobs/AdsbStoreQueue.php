@@ -25,6 +25,6 @@ class AdsbStoreQueue implements ShouldQueue {
         Log::info('AdsbStoreQueue->handle');
 
         $adsbBO = new AdsbBO();
-        $adsbBO->store(json_decode($request));
+        $adsbBO->store(json_decode($this->request));
     }
 }
