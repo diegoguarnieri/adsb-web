@@ -18,7 +18,7 @@ class AdsbStoreQueue implements ShouldQueue {
     private $request;
 
     public function __construct($request) {
-        $this->request = json_encode($request);
+        $this->request = json_encode($request->all());
     }
 
     public function handle() {
