@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use DateTime;
 use App\Apps\Adsb\BO\AdsbBO;
+use App\Jobs\AdsbStoreQueue;
 
 class AdsbController extends Controller {
 
@@ -62,8 +63,7 @@ class AdsbController extends Controller {
     public function store(Request $request) {
         Log::info('AdsbController->store',[json_encode($request->all())]);
 
-        $adsbBO = new AdsbBO();
-        $adsbBO->store($request);
+        AdsbStoreQueue::dispatch($request);
 
         $response = [];
         return response()->json($response, 200);
