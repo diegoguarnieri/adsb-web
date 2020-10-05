@@ -4,7 +4,7 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header">
-                        More Distant Tracks
+                        Farther Tracks
                     </div>
 
                     <div class="card-body">
@@ -44,7 +44,6 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header">
-                        Flights by Day
                     </div>
 
                     <div class="card-body">

@@ -15,50 +15,6 @@ class DashboardBO {
 
     }
 
-    public function getDailyHits($days) {
-        /*$tracks = Track::where('createdAt', '>=', (new DateTime())->sub(new DateInterval('P' . $days . 'D')))
-        ->get();
-
-        $dailyHits = array();
-        foreach($tracks as $key => $track) {
-            if(isset($dailyHits[(new DateTime($track->createdAt))->format('Ymd')])) {
-                $dailyHits[(new DateTime($track->createdAt))->format('Ymd')]++;
-            } else {
-                $dailyHits[(new DateTime($track->createdAt))->format('Ymd')] = 1;
-            }
-        }*/
-
-        /*$unreadMessageCount = Flight::raw(function($collection) {
-            return $collection->aggregate([
-                [
-                    '$match' => [
-                        'to_id' => auth()->id()
-                    ]
-                ],
-                [
-                    '$group' => [
-                        '_id' => '$from_id',
-                        'messages_count' => [
-                            '$sum' => 1
-                        ]
-                    ]
-                ]
-            ]);
-        });*/
-
-        return $dailyHits;
-    }
-
-    public function dailyFlights($days) {
-        $count = Flight::raw(function($collection) {
-            return $collection->aggregate([
-                [ '$match' => [ 'createdAt' => [ '$gte' => ISODate("2020-09-01") ] ] ],
-                [ '$group' => [ '_id' => [ '$dateToString' => [ 'format' => '%Y-%m-%d', 'date' => '$createdAt' ] ], 'count' => [ '$sum' => 1 ] ] ],
-                [ '$sort' => [ '_id' => 1 ] ]
-            ]);    
-        });
-    }
-
     public function getFartherTracks($latitude, $longitude) {
         $flights = Flight::whereNotNull('latitude')
         ->whereNotNull('longitude')
