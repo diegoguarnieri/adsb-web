@@ -14,6 +14,10 @@
                     <div v-if="socketStatus == 'close'" class="alert alert-danger" role="alert">
                         Socket Not Connected!
                     </div>
+
+                    <div v-if="socketStatus == 'initializing'" class="alert alert-warning" role="alert">
+                        Socket Is Initializing!
+                    </div>
                 </div>
             </div>
 
@@ -133,7 +137,7 @@ export default {
     data() {
         return {
             tracks: {},
-            socketStatus: 'close',
+            socketStatus: 'initializing',
             socketEvents: [],
             randon: '',
             version: 0,
@@ -151,6 +155,10 @@ export default {
                 timestamp: new Date()
             }
             this.socketEvents.push(event)
+
+            if(this.socketStatus == 'close') {
+                this.getInitialItems()
+            }
 
             this.socketStatus = 'open'
         }
