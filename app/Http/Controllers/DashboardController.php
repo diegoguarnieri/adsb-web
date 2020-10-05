@@ -19,8 +19,12 @@ class DashboardController extends Controller {
 
         $dashboardBO = new DashboardBO();
         $fartherTracks = $dashboardBO->getFartherTracks(-23.343638, -51.171014);
+        //$dailyHits = $dashboardBO->getDailyHits(2);
 
-        $response = ['fartherTracks' => $fartherTracks];
+        $response = [
+            'fartherTracks' => $fartherTracks,
+            //'dailyHits' => $dailyHits
+        ];
         return response()->json($response, 200);
     }
 }
